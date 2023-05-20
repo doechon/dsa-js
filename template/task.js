@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 function getRes(a) {
     return -1;
 }
