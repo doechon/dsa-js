@@ -1,12 +1,12 @@
-function getRes(a) {
-    return -1;
+function getRes(a, b) {
+    return a + b;
 }
 
 if (require.main === module) {
     process.stdin.on('data', data => {
-        const [a, b, c, d] = data.toString().trim().split(' ').map(n => +n);
-        let result = getRes(a,b,c,d);
-        process.stdout.write(result);
+        const [a, b] = data.toString().trim().split(' ').map(Number);
+        let result = getRes(a,b);
+        process.stdout.write(result.toString());
         process.exit();
     });
 }

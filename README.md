@@ -1,4 +1,6 @@
 # js-dsa
 Learn data structures and algorithms in JavaScript
 
-[yandex-trainnings-1.0](https://yandex.ru/yaintern/algorithm-training_1)
+* [freeCodeCamp](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/)
+* [yandex-trainnings-1.0](https://yandex.ru/yaintern/algorithm-training_1)
+* [LeetCode](https://leetcode.com/explore/featured/card/the-leetcode-beginners-guide/679/sql-syntax/4358/)
