@@ -1,0 +1,1 @@
+[LeetCode roadmap](https://leetcode.com/explore/featured/card/the-leetcode-beginners-guide/679/sql-syntax/4358/)
