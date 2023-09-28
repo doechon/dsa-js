@@ -1,7 +1,5 @@
 function checkSolutionWithWorkingAlgorithm(workingSolution, nonWorkingSolution) {
     for (let i = 0; i < 1000; i++) {
-        // let word = makeWord(Math.floor(Math.random() * 10));
-        // let letters = makeWord(Math.floor(Math.random() * 50));
         let arr1 = Array.from({length: Math.floor(Math.random() * 10) + 1}, () => Math.floor(Math.random() * 10) + 1).sort((a, b) => a - b);
         let arr2 = Array.from({length: Math.floor(Math.random() * 10) + 1}, () => Math.floor(Math.random() * 10) + 1).sort((a, b) => a - b);
         let input = [arr1, arr2]
@@ -9,7 +7,6 @@ function checkSolutionWithWorkingAlgorithm(workingSolution, nonWorkingSolution) 
         let nonWorkingSolutionOutput = nonWorkingSolution(...input);
 
         if (workingSolutionOutput !== nonWorkingSolutionOutput) {
-            // nonWorkingSolutionOutput(input);
             console.log("input:\n" + input.join('\n'))
             console.log("working solution: " + workingSolutionOutput);
             console.log("nonworking solution " + nonWorkingSolutionOutput);

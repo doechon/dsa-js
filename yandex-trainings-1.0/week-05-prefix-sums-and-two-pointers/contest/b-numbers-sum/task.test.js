@@ -1,4 +1,4 @@
-const getRes = require('./number-of-line-segment-with-zero-sum')
+const getRes = require('./task')
 
 describe('tests', () => {
     test('test_1', () => {
