@@ -1,16 +1,15 @@
 function checkSolutionWithWorkingAlgorithm(workingSolution, nonWorkingSolution) {
     for (let i = 0; i < 1000; i++) {
-        // let word = makeWord(Math.floor(Math.random() * 10));
-        // let letters = makeWord(Math.floor(Math.random() * 50));
-        let arr1 = Array.from({length: Math.floor(Math.random() * 10) + 1}, () => Math.floor(Math.random() * 10) + 1).sort((a, b) => a - b);
-        let arr2 = Array.from({length: Math.floor(Math.random() * 10) + 1}, () => Math.floor(Math.random() * 10) + 1).sort((a, b) => a - b);
-        let input = [arr1, arr2]
-        let workingSolutionOutput = workingSolution(...input);
-        let nonWorkingSolutionOutput = nonWorkingSolution(...input);
+        let n = Math.floor(Math.random() * 10) + 1
+        let arr = Array.from({ length: n},
+            () => Math.floor(Math.random() * 10) + 1);
+        let k = new Set(arr).size;
+
+        let workingSolutionOutput = workingSolution(arr, k, n);
+        let nonWorkingSolutionOutput = nonWorkingSolution(arr, k);
 
         if (workingSolutionOutput !== nonWorkingSolutionOutput) {
-            // nonWorkingSolutionOutput(input);
-            console.log("input:\n" + input.join('\n'))
+            console.log("input:\n" + [arr, k, n].join(' '))
             console.log("working solution: " + workingSolutionOutput);
             console.log("nonworking solution " + nonWorkingSolutionOutput);
             break;
@@ -18,56 +17,68 @@ function checkSolutionWithWorkingAlgorithm(workingSolution, nonWorkingSolution) 
     }
 }
 
-function workingSolution(shirts, pants) {
-    let bestShirtIndex = 0;
-    let bestPantsIndex = 0;
-    let minDiff = Math.abs(shirts[0] - pants[0]);
-    let [n, m] = [shirts.length, pants.length]
-    for (let i = 0, j = 0; i < n; ++i) {
-        for (; j < m; ++j) {
-            let currentDiff = Math.abs(shirts[i] - pants[j]);
-
-            if (currentDiff === 0) return [shirts[i], pants[j]].join(' ');
-
-            if (currentDiff < minDiff) {
-                minDiff = currentDiff;
-                bestShirtIndex = i;
-                bestPantsIndex = j;
-
-                if (pants[j] > shirts[i]) break;
-
-            } else if (pants[j] > shirts[i]) break;
-
-            if (j === m && shirts[i] > pants[j - 1]) break;
+function nonWorkingSolution(arr, k) {
+    if (k <= 0) return [0, 0].join(' ')
+    const treeTypeCounts = {}
+    let counter = 0;
+    let [leftIdx, rightIdx] = [0, 0];
+    while (counter < k && rightIdx < arr.length) {
+        const curType = arr[rightIdx];
+        if (!treeTypeCounts.hasOwnProperty(curType))  {
+            counter++;
+            treeTypeCounts[curType] = 1;
+        } else {
+            treeTypeCounts[curType]++;
         }
+        rightIdx++;
     }
-
-    return [shirts[bestShirtIndex], pants[bestPantsIndex]].join(' ');
+    while (counter === k && (rightIdx - leftIdx + 1) >= k) {
+        const curType = arr[leftIdx];
+        if (treeTypeCounts[curType] === 1) {
+            counter--;
+        }
+        treeTypeCounts[curType]--;
+        leftIdx++;
+    }
+    return [leftIdx, rightIdx].join(' ');
 }
 
 
-function nonWorkingSolution(arr1, arr2) {
-    let [ansEl1, ansEl2] = [0, 0];
-    let ansDiff = Infinity;
-    let [idx1, idx2] = [0, 0]
-    while (idx1 < arr1.length && idx2 < arr2.length) {
-        const [el1, el2] = [arr1[idx1], arr2[idx2]]
-        const curDiff = el1 - el2;
-        if (curDiff === 0) {
-            [ansEl1, ansEl2] = [el1, el2];
-            break;
+function workingSolution(trees, k, n) {
+    let segment = [1, n];
+    let minLength = n;
+
+    let availableColors = new Set([trees[0]]);
+    let segmentTrees = {[trees[0]]: 1};
+
+    let left = 0;
+    let right = 0;
+
+    while (true) {
+        while (right < n - 1 && availableColors.size < k) {
+            ++right;
+            availableColors.add(trees[right]);
+            segmentTrees[trees[right]] = segmentTrees[trees[right]] + 1 || 1;
         }
-        if (curDiff < ansDiff) {
-            [ansEl1, ansEl2] = [el1, el2];
-            ansDiff = curDiff;
-        }
-        if (el1 < el2) {
-            idx1++;
-        } else {
-            idx2++;
+
+        if (availableColors.size < k) break;
+
+        for(; availableColors.size === k; ++left) {
+            let length = right - left + 1;
+
+            if (length < minLength) {
+                minLength = length;
+                segment = [left + 1, right + 1];
+
+                if (minLength === k) return segment.join(' ');
+            }
+
+            --segmentTrees[trees[left]];
+            if (!segmentTrees[trees[left]]) availableColors.delete(trees[left]);
         }
     }
-    return [ansEl1, ansEl2].join(' ');
+
+    return segment.join(' ');
 }
 
 
